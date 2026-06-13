@@ -1,0 +1,179 @@
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const facebookService = require('../services/facebookService');
+const cryptoService = require('../services/cryptoService');
+
+/**
+ * Initiate Facebook Login by redirecting to Meta OAuth Dialog
+ * GET /api/auth/facebook
+ */
+const redirectToFacebook = (req, res) => {
+  const appId = process.env.FB_APP_ID;
+  const redirectUri = process.env.FB_REDIRECT_URI;
+  
+  if (!appId || !redirectUri) {
+    return res.status(500).json({ 
+      message: 'Facebook credentials missing on server. Check environment variables.' 
+    });
+  }
+
+  const scope = [
+    'pages_show_list',
+    'pages_read_engagement',
+    'pages_manage_posts',
+    'public_profile',
+    'email'
+  ].join(',');
+
+  const fbUrl = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
+  
+  res.redirect(fbUrl);
+};
+
+/**
+ * Handle Facebook Login Callback
+ * GET /api/auth/facebook/callback
+ */
+const handleFacebookCallback = async (req, res) => {
+  const { code, error } = req.query;
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+
+  if (error) {
+    console.error('Facebook OAuth Callback Error:', error);
+    return res.redirect(`${frontendUrl}/?error=${encodeURIComponent(error)}`);
+  }
+
+  if (!code) {
+    return res.redirect(`${frontendUrl}/?error=no_code_provided`);
+  }
+
+  try {
+    // 1. Exchange authorization code for user access token
+    const shortLivedToken = await facebookService.exchangeCodeForToken(code);
+    
+    // 2. Exchange for a long-lived user access token
+    const longLivedToken = await facebookService.exchangeShortToLongLivedToken(shortLivedToken);
+    
+    // 3. Fetch user profile information
+    const profile = await facebookService.getUserProfile(longLivedToken);
+    
+    // 4. Encrypt the access token before storing
+    const encryptedToken = cryptoService.encrypt(longLivedToken);
+
+    // 5. Create or update user in MongoDB
+    let user = await User.findOne({ facebookId: profile.id });
+    
+    if (user) {
+      user.name = profile.name;
+      user.email = profile.email || user.email;
+      user.accessToken = encryptedToken;
+      await user.save();
+    } else {
+      user = new User({
+        name: profile.name,
+        email: profile.email || '',
+        facebookId: profile.id,
+        accessToken: encryptedToken,
+      });
+      await user.save();
+    }
+
+    // 6. Generate JWT Session Token
+    const jwtToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET || 'default_jwt_secret',
+      { expiresIn: '30d' }
+    );
+
+    // 7. Redirect back to frontend dashboard with JWT
+    res.redirect(`${frontendUrl}/auth/callback?token=${jwtToken}`);
+  } catch (err) {
+    console.error('Facebook Callback Handler Error:', err.message);
+    res.redirect(`${frontendUrl}/?error=${encodeURIComponent(err.message)}`);
+  }
+};
+
+/**
+ * Direct Login / Registration with token (for extension/mobile/SDK flow)
+ * POST /api/auth/facebook
+ */
+const loginWithFacebookToken = async (req, res) => {
+  const { accessToken } = req.body;
+
+  if (!accessToken) {
+    return res.status(400).json({ message: 'Facebook access token is required' });
+  }
+
+  try {
+    // Exchange token for a long-lived one just in case
+    let finalToken = accessToken;
+    try {
+      finalToken = await facebookService.exchangeShortToLongLivedToken(accessToken);
+    } catch (tokenErr) {
+      console.log('Token is already long-lived or could not exchange: ', tokenErr.message);
+    }
+
+    // Fetch user profile
+    const profile = await facebookService.getUserProfile(finalToken);
+    const encryptedToken = cryptoService.encrypt(finalToken);
+
+    let user = await User.findOne({ facebookId: profile.id });
+    
+    if (user) {
+      user.name = profile.name;
+      user.email = profile.email || user.email;
+      user.accessToken = encryptedToken;
+      await user.save();
+    } else {
+      user = new User({
+        name: profile.name,
+        email: profile.email || '',
+        facebookId: profile.id,
+        accessToken: encryptedToken,
+      });
+      await user.save();
+    }
+
+    const jwtToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET || 'default_jwt_secret',
+      { expiresIn: '30d' }
+    );
+
+    res.json({
+      token: jwtToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        facebookId: user.facebookId,
+      }
+    });
+  } catch (err) {
+    console.error('Login with token error:', err.message);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/**
+ * Get authenticated user profile
+ * GET /api/auth/me
+ */
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-accessToken');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = {
+  redirectToFacebook,
+  handleFacebookCallback,
+  loginWithFacebookToken,
+  getMe,
+};
