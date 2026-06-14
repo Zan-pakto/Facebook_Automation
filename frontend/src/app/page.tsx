@@ -35,7 +35,7 @@ export default function LoginPage() {
 
   if (checkingAuth) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0f111a]">
+      <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="relative flex flex-col items-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           <p className="mt-4 text-muted-foreground animate-pulse text-sm">Securing handshake with Meta...</p>
@@ -45,7 +45,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between overflow-hidden px-4 md:px-12 py-8">
+    <div className="relative min-h-screen flex flex-col justify-between overflow-hidden px-4 md:px-12 py-8 bg-background text-foreground">
       {/* Decorative Glow Elements */}
       <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -53,14 +53,14 @@ export default function LoginPage() {
       {/* Header */}
       <header className="flex justify-between items-center max-w-7xl w-full mx-auto z-10">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-primary/80 flex items-center justify-center shadow-lg shadow-primary/20">
             <FacebookIcon className="w-6 h-6 text-white" />
           </div>
-          <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+          <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 bg-clip-text text-transparent">
             FB BulkPoster
           </span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground px-3 py-1.5 rounded-full border border-white/5 glass-panel bg-white/2">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground px-3 py-1.5 rounded-full border border-border glass-panel">
           <ShieldCheck className="w-3.5 h-3.5 text-success" />
           <span>Personal Dashboard v1.0</span>
         </div>
@@ -75,9 +75,9 @@ export default function LoginPage() {
             Meta Graph API Integrated
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-gray-900">
             Publish once.<br />
-            Post to <span className="bg-gradient-to-r from-primary via-[#4cc2ff] to-[#a855f7] bg-clip-text text-transparent">multiple Pages</span>.
+            Post to <span className="bg-gradient-to-r from-primary via-orange-500 to-amber-500 bg-clip-text text-transparent">multiple Pages</span>.
           </h1>
           
           <p className="text-muted-foreground max-w-xl text-md md:text-lg leading-relaxed">
@@ -86,39 +86,39 @@ export default function LoginPage() {
 
           {/* Feature highlights */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 max-w-xl">
-            <div className="flex gap-3 items-start p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="flex gap-3 items-start p-3 rounded-xl bg-card border border-border shadow-sm">
               <div className="p-2 rounded-lg bg-primary/10 text-primary">
                 <Layers className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-sm">Multi-Page Selection</h4>
+                <h4 className="font-semibold text-sm text-gray-900">Multi-Page Selection</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">Select a subset or select all pages with toggle selectors.</p>
               </div>
             </div>
-            <div className="flex gap-3 items-start p-3 rounded-xl bg-white/[0.02] border border-white/5">
-              <div className="p-2 rounded-lg bg-accent/10 text-accent">
+            <div className="flex gap-3 items-start p-3 rounded-xl bg-card border border-border shadow-sm">
+              <div className="p-2 rounded-lg bg-accent/10 text-primary">
                 <Zap className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-sm">Unified Media Composer</h4>
+                <h4 className="font-semibold text-sm text-gray-900">Unified Media Composer</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">Add descriptions, upload high-res images, and video files.</p>
               </div>
             </div>
-            <div className="flex gap-3 items-start p-3 rounded-xl bg-white/[0.02] border border-white/5">
+            <div className="flex gap-3 items-start p-3 rounded-xl bg-card border border-border shadow-sm">
               <div className="p-2 rounded-lg bg-success/10 text-success">
                 <BarChart3 className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-sm">Status & Error Logs</h4>
+                <h4 className="font-semibold text-sm text-gray-900">Status & Error Logs</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">Track publishing outcomes per page in real-time history.</p>
               </div>
             </div>
-            <div className="flex gap-3 items-start p-3 rounded-xl bg-white/[0.02] border border-white/5">
-              <div className="p-2 rounded-lg bg-yellow-500/10 text-yellow-500">
+            <div className="flex gap-3 items-start p-3 rounded-xl bg-card border border-border shadow-sm">
+              <div className="p-2 rounded-lg bg-yellow-500/10 text-yellow-600">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-semibold text-sm">Encrypted Storage</h4>
+                <h4 className="font-semibold text-sm text-gray-900">Encrypted Storage</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">Page tokens are encrypted in DB to secure your access keys.</p>
               </div>
             </div>
@@ -127,17 +127,17 @@ export default function LoginPage() {
 
         {/* Right Side: Glass login card */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
-          <div className="w-full max-w-md p-8 rounded-3xl glass-panel relative overflow-hidden border border-white/10 shadow-2xl flex flex-col justify-between">
+          <div className="w-full max-w-md p-8 rounded-3xl glass-panel relative overflow-hidden border border-border shadow-xl flex flex-col justify-between bg-white">
             {/* Background spotlight */}
-            <div className="absolute top-[-20%] left-[-20%] w-[150px] h-[150px] bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute top-[-20%] left-[-20%] w-[150px] h-[150px] bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="mb-6">
-              <h2 className="text-2xl font-bold tracking-tight">Access Dashboard</h2>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900">Access Dashboard</h2>
               <p className="text-muted-foreground text-sm mt-1">Connect your Facebook Account for Business to manage pages and start broadcasting.</p>
             </div>
 
             {errorMsg && (
-              <div className="mb-6 flex gap-2.5 items-start p-3 bg-red-950/30 border border-red-500/20 text-red-400 rounded-xl text-xs">
+              <div className="mb-6 flex gap-2.5 items-start p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs">
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold">Authentication failed</span>
@@ -162,7 +162,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="border-t border-white/5 pt-6 mt-8 flex items-center justify-between text-xs text-muted-foreground">
+            <div className="border-t border-border/50 pt-6 mt-8 flex items-center justify-between text-xs text-muted-foreground">
               <span>Next.js + Express + MongoDB</span>
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-success animate-ping"></span>
@@ -174,14 +174,14 @@ export default function LoginPage() {
       </main>
 
       {/* Footer */}
-      <footer className="max-w-7xl w-full mx-auto text-center border-t border-white/5 pt-8 text-xs text-muted-foreground z-10 flex flex-col md:flex-row justify-between gap-4">
+      <footer className="max-w-7xl w-full mx-auto text-center border-t border-border/50 pt-8 text-xs text-muted-foreground z-10 flex flex-col md:flex-row justify-between gap-4 pb-4">
         <p>&copy; {new Date().getFullYear()} Facebook Bulk Posting Dashboard. Personal Use Licence.</p>
         <div className="flex justify-center gap-4">
-          <a href="#" className="hover:text-slate-300">Privacy Policy</a>
+          <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
           <span>&bull;</span>
-          <a href="#" className="hover:text-slate-300">Meta Terms</a>
+          <a href="#" className="hover:text-primary transition-colors">Meta Terms</a>
           <span>&bull;</span>
-          <a href="#" className="hover:text-slate-300">App Setup</a>
+          <a href="#" className="hover:text-primary transition-colors">App Setup</a>
         </div>
       </footer>
     </div>

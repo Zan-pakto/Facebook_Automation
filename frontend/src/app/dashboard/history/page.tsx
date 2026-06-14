@@ -85,9 +85,9 @@ export default function PostHistoryPage() {
       </div>
 
       {history.length === 0 ? (
-        <div className="p-16 rounded-2xl border border-dashed border-white/10 text-center flex flex-col items-center justify-center bg-white/[0.01]">
+        <div className="p-16 rounded-2xl border border-dashed border-border text-center flex flex-col items-center justify-center bg-muted/30">
           <History className="w-12 h-12 text-muted-foreground mb-4" />
-          <h3 className="font-bold text-slate-300">No Postings Found</h3>
+          <h3 className="font-bold text-foreground">No Postings Found</h3>
           <p className="text-xs text-muted-foreground max-w-sm mt-1 mb-6">
             You haven't run any publishing campaigns yet. Go to the Composer page to send your first bulk post.
           </p>
@@ -109,8 +109,8 @@ export default function PostHistoryPage() {
                 key={post._id}
                 className={`rounded-2xl border transition-all overflow-hidden ${
                   isExpanded 
-                    ? 'border-white/15 bg-[#121421]/45 shadow-lg' 
-                    : 'border-white/5 bg-[#121421]/20 hover:border-white/10'
+                    ? 'border-border bg-card/90 shadow-lg' 
+                    : 'border-border bg-card/50 hover:border-border'
                 }`}
               >
                 {/* Header Section (Always Visible) */}
@@ -120,13 +120,13 @@ export default function PostHistoryPage() {
                 >
                   <div className="flex items-center gap-4 min-w-0 flex-1">
                     {/* Media Type Icon */}
-                    <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 shrink-0 flex items-center justify-center">
+                    <div className="p-2.5 rounded-xl bg-muted/30 border border-border shrink-0 flex items-center justify-center">
                       {getMediaIcon(post.mediaType)}
                     </div>
                     
                     {/* Title Details */}
                     <div className="min-w-0 flex-1 pr-4">
-                      <p className="text-xs text-slate-300 font-semibold truncate break-all">
+                      <p className="text-xs text-foreground font-semibold truncate break-all">
                         {post.content || <span className="italic opacity-55">Media post without caption</span>}
                       </p>
                       
@@ -154,7 +154,7 @@ export default function PostHistoryPage() {
                       {status.label}
                     </span>
                     
-                    <button className="text-muted-foreground hover:text-slate-200 p-1">
+                    <button className="text-muted-foreground hover:text-foreground p-1">
                       {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
                   </div>
@@ -162,13 +162,13 @@ export default function PostHistoryPage() {
 
                 {/* Collapsible Expansion Section */}
                 {isExpanded && (
-                  <div className="px-5 pb-6 pt-1 border-t border-white/5 space-y-5 animate-slide-down">
+                  <div className="px-5 pb-6 pt-1 border-t border-border space-y-5 animate-slide-down">
                     
                     {/* Caption Detail */}
                     {post.content && (
                       <div className="space-y-1.5">
                         <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">Caption text</span>
-                        <div className="p-4 rounded-xl bg-white/[0.01] border border-white/5 text-xs text-slate-300 whitespace-pre-wrap break-all leading-normal">
+                        <div className="p-4 rounded-xl bg-muted/30 border border-border text-xs text-foreground whitespace-pre-wrap break-all leading-normal">
                           {post.content}
                         </div>
                       </div>
@@ -178,7 +178,7 @@ export default function PostHistoryPage() {
                     {post.mediaUrl && (
                       <div className="space-y-1.5">
                         <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">Uploaded Attachment</span>
-                        <div className="max-w-md border border-white/10 rounded-xl overflow-hidden bg-black/40 flex items-center justify-center max-h-[220px]">
+                        <div className="max-w-md border border-border rounded-xl overflow-hidden bg-black/40 flex items-center justify-center max-h-[220px]">
                           {post.mediaType === 'image' ? (
                             <img 
                               src={getMediaUrl(post.mediaUrl)} 
@@ -200,10 +200,10 @@ export default function PostHistoryPage() {
                     <div className="space-y-1.5">
                       <span className="text-[10px] uppercase font-semibold tracking-wider text-muted-foreground">Page Publishing Breakdown</span>
                       
-                      <div className="rounded-xl border border-white/5 overflow-hidden">
+                      <div className="rounded-xl border border-border overflow-hidden">
                         <table className="w-full text-left border-collapse text-xs">
                           <thead>
-                            <tr className="bg-white/[0.02] border-b border-white/5 text-muted-foreground font-semibold">
+                            <tr className="bg-muted/30 border-b border-border text-muted-foreground font-semibold">
                               <th className="p-3">Page Name</th>
                               <th className="p-3">Publish Status</th>
                               <th className="p-3">Post ID / Graph API Exceptions</th>
@@ -212,8 +212,8 @@ export default function PostHistoryPage() {
                           </thead>
                           <tbody>
                             {post.publishStatus.map((p, idx) => (
-                              <tr key={idx} className="border-b border-white/5 last:border-0 hover:bg-white/[0.01]">
-                                <td className="p-3 font-semibold text-slate-300">{p.pageName}</td>
+                              <tr key={idx} className="border-b border-border last:border-0 hover:bg-muted/30">
+                                <td className="p-3 font-semibold text-foreground">{p.pageName}</td>
                                 <td className="p-3">
                                   {p.status === 'success' ? (
                                     <span className="inline-flex items-center gap-1 text-success text-[10px] font-semibold">
@@ -229,7 +229,7 @@ export default function PostHistoryPage() {
                                 </td>
                                 <td className="p-3 text-[10px]">
                                   {p.status === 'success' ? (
-                                    <code className="bg-[#242634] px-1.5 py-0.5 rounded text-slate-400 font-mono text-[9px]">
+                                    <code className="bg-muted px-1.5 py-0.5 rounded text-muted-foreground font-mono text-[9px]">
                                       {p.postId}
                                     </code>
                                   ) : (

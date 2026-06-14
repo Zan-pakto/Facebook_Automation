@@ -45,9 +45,9 @@ export default function Header() {
   };
 
   return (
-    <header className="h-16 px-8 border-b border-white/5 bg-[#0a0c14]/40 backdrop-blur-md flex items-center justify-between sticky top-0 z-10 w-full">
+    <header className="h-16 px-8 border-b border-border bg-background/40 backdrop-blur-md flex items-center justify-between sticky top-0 z-10 w-full">
       <div>
-        <h2 className="font-bold text-lg text-slate-100 tracking-tight">{getPageTitle()}</h2>
+        <h2 className="font-bold text-lg text-gray-900 tracking-tight">{getPageTitle()}</h2>
       </div>
 
       <div className="flex items-center gap-4">
@@ -70,7 +70,7 @@ export default function Header() {
           <button
             onClick={() => syncMutation.mutate()}
             disabled={syncMutation.isPending}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 active:scale-[0.98] text-xs font-semibold text-slate-200 hover:text-white transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted hover:bg-muted/80 border border-border active:scale-[0.98] text-xs font-semibold text-foreground transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${syncMutation.isPending ? 'animate-spin text-primary' : ''}`} />
             {syncMutation.isPending ? 'Syncing Pages...' : 'Sync Pages'}

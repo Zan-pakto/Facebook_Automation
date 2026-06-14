@@ -38,14 +38,14 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 border-r border-white/5 bg-[#0a0c14]/80 backdrop-blur-xl flex flex-col justify-between shrink-0 h-screen sticky top-0 z-20">
+    <aside className="w-64 border-r border-border bg-background/80 backdrop-blur-xl flex flex-col justify-between shrink-0 h-screen sticky top-0 z-20">
       {/* Brand Logo */}
-      <div className="p-6 border-b border-white/5">
+      <div className="p-6 border-b border-border">
         <Link href="/dashboard" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center shadow-md shadow-primary/20">
             <FacebookIcon className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold tracking-tight text-md bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+          <span className="font-bold tracking-tight text-md bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent">
             FB BulkPoster
           </span>
         </Link>
@@ -63,10 +63,10 @@ export default function Sidebar() {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
                 isActive
                   ? 'bg-primary/15 text-primary border border-primary/20 shadow-inner'
-                  : 'text-muted-foreground hover:bg-white/[0.02] hover:text-slate-100 border border-transparent'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground border border-transparent'
               }`}
             >
-              <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-slate-200'}`} />
+              <Icon className={`w-4 h-4 transition-transform group-hover:scale-105 ${isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'}`} />
               {item.name}
             </Link>
           );
@@ -74,14 +74,14 @@ export default function Sidebar() {
       </nav>
 
       {/* User Section / Footer */}
-      <div className="p-4 border-t border-white/5 space-y-3">
+      <div className="p-4 border-t border-border space-y-3">
         {user && (
-          <div className="flex items-center gap-3 p-2 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-slate-700 to-slate-600 flex items-center justify-center text-white font-bold text-xs uppercase shadow-sm">
+          <div className="flex items-center gap-3 p-2 rounded-xl bg-card border border-border">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white font-bold text-xs uppercase shadow-sm">
               {user.name.substring(0, 2)}
             </div>
             <div className="overflow-hidden">
-              <p className="text-xs font-semibold truncate text-slate-200">{user.name}</p>
+              <p className="text-xs font-semibold truncate text-gray-900">{user.name}</p>
               <p className="text-[10px] text-muted-foreground truncate">{user.email || 'Connected via Meta'}</p>
             </div>
           </div>

@@ -205,7 +205,7 @@ export default function PostComposer() {
           <div className="p-6 rounded-2xl glass-card space-y-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
               <div>
-                <h3 className="font-semibold text-sm text-slate-200">Select Target Facebook Pages</h3>
+                <h3 className="font-semibold text-sm text-foreground">Select Target Facebook Pages</h3>
                 <p className="text-[10px] text-muted-foreground mt-0.5">Select one or more pages to post to</p>
               </div>
               
@@ -236,11 +236,11 @@ export default function PostComposer() {
             {isLoadingPages ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
                 {[1, 2, 3].map(n => (
-                  <div key={n} className="p-3 rounded-xl border border-white/5 bg-white/[0.01] animate-pulse h-14 flex items-center"></div>
+                  <div key={n} className="p-3 rounded-xl border border-border bg-muted/30 animate-pulse h-14 flex items-center"></div>
                 ))}
               </div>
             ) : filteredPages.length === 0 ? (
-              <div className="p-6 rounded-xl border border-dashed border-white/10 text-center text-xs text-muted-foreground bg-white/[0.01]">
+              <div className="p-6 rounded-xl border border-dashed border-border text-center text-xs text-muted-foreground bg-muted/30">
                 No connected pages found. Make sure to sync pages in settings or overview.
               </div>
             ) : (
@@ -255,7 +255,7 @@ export default function PostComposer() {
                       className={`p-3 rounded-xl border flex items-center justify-between text-left transition-all duration-200 cursor-pointer ${
                         isChecked 
                           ? 'border-primary/55 bg-primary/5' 
-                          : 'border-white/5 bg-[#121421]/20 hover:border-white/10 hover:bg-[#121421]/30'
+                          : 'border-border bg-card/50 hover:border-border hover:bg-card'
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -263,7 +263,7 @@ export default function PostComposer() {
                           <img
                             src={page.picture}
                             alt={page.pageName}
-                            className="w-8 h-8 rounded-full border border-white/5 object-cover"
+                            className="w-8 h-8 rounded-full border border-border object-cover"
                           />
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-[10px] uppercase">
@@ -271,7 +271,7 @@ export default function PostComposer() {
                           </div>
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-semibold truncate text-slate-200">{page.pageName}</p>
+                          <p className="text-xs font-semibold truncate text-foreground">{page.pageName}</p>
                           <p className="text-[9px] text-muted-foreground truncate">{page.category || 'Business Page'}</p>
                         </div>
                       </div>
@@ -279,7 +279,7 @@ export default function PostComposer() {
                       <div className={`w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ml-2 transition-all ${
                         isChecked 
                           ? 'bg-primary border-primary text-white' 
-                          : 'border-white/20 text-transparent'
+                          : 'border-border text-transparent'
                       }`}>
                         <Check className="w-3 h-3 stroke-[3]" />
                       </div>
@@ -293,7 +293,7 @@ export default function PostComposer() {
           {/* Section 2: Post Content Composer */}
           <div className="p-6 rounded-2xl glass-card space-y-4">
             <div>
-              <h3 className="font-semibold text-sm text-slate-200">Post Content</h3>
+              <h3 className="font-semibold text-sm text-foreground">Post Content</h3>
               <p className="text-[10px] text-muted-foreground mt-0.5">Write the caption details and upload supporting materials</p>
             </div>
 
@@ -326,24 +326,24 @@ export default function PostComposer() {
               {!selectedFile ? (
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="border border-dashed border-white/10 hover:border-white/20 bg-white/[0.01] hover:bg-white/[0.03] transition-all p-6 rounded-xl flex flex-col items-center justify-center cursor-pointer group"
+                  className="border border-dashed border-border hover:border-border bg-muted/30 hover:bg-muted/30 transition-all p-6 rounded-xl flex flex-col items-center justify-center cursor-pointer group"
                 >
-                  <div className="flex gap-3 text-muted-foreground mb-2 group-hover:text-slate-300">
+                  <div className="flex gap-3 text-muted-foreground mb-2 group-hover:text-foreground">
                     <ImageIcon className="w-6 h-6 text-primary/70" />
                     <ArrowLeftRight className="w-4 h-4 mt-1 opacity-40" />
                     <VideoIcon className="w-6 h-6 text-accent/70" />
                   </div>
-                  <p className="text-xs font-semibold text-slate-300">Click to upload photo or video</p>
+                  <p className="text-xs font-semibold text-foreground">Click to upload photo or video</p>
                   <p className="text-[10px] text-muted-foreground mt-1">Accepts images and video up to 100MB</p>
                 </div>
               ) : (
-                <div className="p-4 rounded-xl border border-white/10 bg-white/[0.02] flex items-center justify-between">
+                <div className="p-4 rounded-xl border border-border bg-muted/30 flex items-center justify-between">
                   <div className="flex items-center gap-3 overflow-hidden">
                     <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
                       {mediaType === 'image' ? <ImageIcon className="w-5 h-5" /> : <VideoIcon className="w-5 h-5" />}
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-xs font-semibold text-slate-200 truncate">{selectedFile.name}</p>
+                      <p className="text-xs font-semibold text-foreground truncate">{selectedFile.name}</p>
                       <p className="text-[10px] text-muted-foreground mt-0.5">{(selectedFile.size / (1024 * 1024)).toFixed(2)} MB &bull; {mediaType.toUpperCase()}</p>
                     </div>
                   </div>
@@ -351,7 +351,7 @@ export default function PostComposer() {
                   <button
                     type="button"
                     onClick={handleRemoveFile}
-                    className="p-1.5 rounded-full hover:bg-white/5 border border-transparent hover:border-white/5 text-muted-foreground hover:text-red-400 transition-all cursor-pointer"
+                    className="p-1.5 rounded-full hover:bg-muted border border-transparent hover:border-border text-muted-foreground hover:text-red-400 transition-all cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -374,7 +374,7 @@ export default function PostComposer() {
 
         {/* Right Side: Mock Preview Panel */}
         <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-24">
-          <h3 className="font-bold text-sm tracking-tight text-slate-200">Live feed preview simulator</h3>
+          <h3 className="font-bold text-sm tracking-tight text-foreground">Live feed preview simulator</h3>
           <PostPreview
             selectedPages={getSelectedPagesObjects()}
             content={content}
@@ -386,12 +386,12 @@ export default function PostComposer() {
 
       {/* Progress Dialog Overlay Modal */}
       {showProgressModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0a0a0f]/80 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-lg p-6 rounded-2xl glass-panel border border-white/10 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-fade-in">
+          <div className="w-full max-w-lg p-6 rounded-2xl glass-panel border border-border shadow-2xl relative overflow-hidden flex flex-col justify-between">
             <div className="absolute top-[-30%] left-[-10%] w-[200px] h-[200px] bg-primary/10 rounded-full blur-[60px] pointer-events-none"></div>
 
             <div className="mb-4">
-              <h3 className="text-md font-bold text-slate-100 flex items-center gap-2">
+              <h3 className="text-md font-bold text-foreground flex items-center gap-2">
                 {isPublishing && <Loader2 className="w-4 h-4 text-primary animate-spin" />}
                 {!isPublishing && <CheckCircle2 className="w-4 h-4 text-success" />}
                 {isPublishing ? 'Bulk Posting in Progress...' : 'Bulk Posting Completed'}
@@ -408,9 +408,9 @@ export default function PostComposer() {
               {publishProgress.map((prog) => (
                 <div 
                   key={prog.pageId}
-                  className="p-3 rounded-xl border border-white/5 bg-white/[0.01] flex items-center justify-between text-xs"
+                  className="p-3 rounded-xl border border-border bg-muted/30 flex items-center justify-between text-xs"
                 >
-                  <div className="font-semibold text-slate-300 truncate max-w-[280px]">
+                  <div className="font-semibold text-foreground truncate max-w-[280px]">
                     {prog.pageName}
                   </div>
                   
@@ -442,7 +442,7 @@ export default function PostComposer() {
               type="button"
               onClick={handleCloseProgressModal}
               disabled={isPublishing}
-              className="mt-2 w-full py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] disabled:opacity-40 border border-white/10 font-semibold text-xs text-slate-200 hover:text-white transition-all cursor-pointer"
+              className="mt-2 w-full py-2.5 rounded-xl bg-muted/30 hover:bg-muted/80 disabled:opacity-40 border border-border font-semibold text-xs text-foreground hover:text-white transition-all cursor-pointer"
             >
               {isPublishing ? 'Processing Queue...' : 'Close & Reset'}
             </button>

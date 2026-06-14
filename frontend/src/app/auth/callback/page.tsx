@@ -31,11 +31,11 @@ function CallbackHandler() {
 
   if (errorMsg) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#0f111a] text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background text-foreground text-center">
         <div className="p-4 rounded-full bg-red-950/40 border border-red-500/20 text-red-500 mb-4 animate-bounce">
           <ShieldAlert className="w-8 h-8" />
         </div>
-        <h1 className="text-xl font-bold text-slate-100">Handshake Authentication Failed</h1>
+        <h1 className="text-xl font-bold text-foreground">Handshake Authentication Failed</h1>
         <p className="mt-2 text-sm text-muted-foreground max-w-md">{errorMsg}</p>
         <button
           onClick={() => router.push('/')}
@@ -48,10 +48,10 @@ function CallbackHandler() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f111a]">
-      <div className="p-8 rounded-2xl glass-panel flex flex-col items-center max-w-sm w-full border border-white/5 shadow-2xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+      <div className="p-8 rounded-2xl glass-panel flex flex-col items-center max-w-sm w-full border border-border shadow-2xl">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <h3 className="mt-4 font-bold text-slate-200">Processing Facebook OAuth</h3>
+        <h3 className="mt-4 font-bold text-foreground">Processing Facebook OAuth</h3>
         <p className="mt-1 text-xs text-muted-foreground text-center">
           Verifying authorization token and synchronizing permissions. Please wait...
         </p>
@@ -63,7 +63,7 @@ function CallbackHandler() {
 export default function AuthCallbackPage() {
   return (
     <Suspense fallback={
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f111a]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
         <Loader2 className="w-10 h-10 text-primary animate-spin" />
       </div>
     }>
