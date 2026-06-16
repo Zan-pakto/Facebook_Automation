@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { authService } from '@/services/api';
 import { ShieldCheck, Zap, Layers, BarChart3, AlertCircle } from 'lucide-react';
 import FacebookIcon from '@/components/facebook-icon';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -177,11 +178,11 @@ export default function LoginPage() {
       <footer className="max-w-7xl w-full mx-auto text-center border-t border-border/50 pt-8 text-xs text-muted-foreground z-10 flex flex-col md:flex-row justify-between gap-4 pb-4">
         <p>&copy; {new Date().getFullYear()} Facebook Bulk Posting Dashboard. Personal Use Licence.</p>
         <div className="flex justify-center gap-4">
-          <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
+          <Link href="/pages/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
           <span>&bull;</span>
-          <a href="#" className="hover:text-primary transition-colors">Meta Terms</a>
+          <Link href="/pages/terms" className="hover:text-primary transition-colors">Terms of service</Link>
           <span>&bull;</span>
-          <a href="#" className="hover:text-primary transition-colors">App Setup</a>
+          <Link href="/pages/setup" className="hover:text-primary transition-colors">App Setup</Link>
         </div>
       </footer>
     </div>
