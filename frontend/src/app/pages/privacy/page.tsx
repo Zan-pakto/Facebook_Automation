@@ -126,9 +126,9 @@ export default function PrivacyPolicy() {
             <p className="mb-4">However, no method of transmission over the Internet or electronic storage is completely secure. We cannot guarantee absolute security, and you transmit information to us at your own risk. In the event of a data breach affecting your personal information, we will notify you in accordance with applicable law.</p>
 
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">8. International Data Transfers</h2>
-            <p className="mb-4">Eniacworld is operated from servers located in Frankfurt, Germany. If you access the Service from outside Germany, your information will be transferred to, processed, and stored in Germany.</p>
-            <p className="mb-4">For users in the European Economic Area, United Kingdom, or Switzerland, we rely on appropriate legal mechanisms to transfer personal information, including Standard Contractual Clauses where applicable.</p>
-            <p className="mb-4">By using the Service, you consent to the transfer of your information to Germany and other jurisdictions where Eniacworld or its service providers operate.</p>
+            <p className="mb-4">Eniacworld is operated from servers located in Jaipur, India. If you access the Service from outside India, your information will be transferred to, processed, and stored in India.</p>
+            <p className="mb-4">For users in the India, we rely on appropriate legal mechanisms to transfer personal information, including Standard Contractual Clauses where applicable.</p>
+            <p className="mb-4">By using the Service, you consent to the transfer of your information to India and other jurisdictions where Eniacworld or its service providers operate.</p>
 
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">9. Your Rights and Choices</h2>
             <p className="mb-4">Depending on your location, you may have the following rights regarding your personal information:</p>
@@ -150,59 +150,30 @@ export default function PrivacyPolicy() {
 
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">11. Third-Party Links</h2>
             <p className="mb-4">The Site may contain links to third-party websites. We are not responsible for the privacy practices of those websites. We encourage you to review the privacy policies of any third-party sites you visit.</p>
+ 
+<h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">
+12. Data Protection Information for Indian Users
+</h2>
 
-            <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">12. Information for European Economic Area, United Kingdom, and Swiss Users (GDPR)</h2>
-            <p className="mb-4">If you are located in the European Economic Area ("EEA"), United Kingdom ("UK"), or Switzerland, the following additional information applies to you under the General Data Protection Regulation ("GDPR") and equivalent laws.</p>
-            
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.1 Data Controller</h3>
-            <p className="mb-4">Eniacworld is the data controller responsible for your personal information. Our contact details are provided in Section 15 of this Privacy Policy.</p>
+<p className="mb-4">
+If you are located in India, your personal information is processed in accordance
+with applicable Indian data protection laws, including the Digital Personal Data
+Protection Act, 2023 (DPDP Act).
+</p>
 
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.2 Legal Bases for Processing</h3>
-            <p className="mb-4">We process your personal information on the following legal bases:</p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-600">
-              <li><strong className="text-gray-800">Performance of a Contract:</strong> To provide the Service, manage your account, and fulfill our contractual obligations to you.</li>
-              <li><strong className="text-gray-800">Legitimate Interests:</strong> To improve our services, conduct analytics, prevent fraud, ensure security, and market our products to you, where such interests are not overridden by your data protection rights.</li>
-              <li><strong className="text-gray-800">Consent:</strong> Where you have provided consent for specific processing activities, such as receiving marketing communications or connecting third-party accounts. You may withdraw consent at any time.</li>
-              <li><strong className="text-gray-800">Legal Obligation:</strong> To comply with applicable laws, regulations, and legal processes.</li>
-            </ul>
+<p className="mb-4">
+Eniacworld acts as the Data Fiduciary responsible for handling your personal information.
+We collect and process your data only for providing our services, improving user
+experience, maintaining security, and complying with legal obligations.
+</p>
 
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.3 Your Rights Under GDPR</h3>
-            <p className="mb-4">You have the following rights regarding your personal information:</p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-600">
-              <li><strong className="text-gray-800">Right of Access:</strong> Obtain confirmation of whether we process your personal data and request a copy of such data.</li>
-              <li><strong className="text-gray-800">Right to Rectification:</strong> Request correction of inaccurate or incomplete personal data.</li>
-              <li><strong className="text-gray-800">Right to Erasure:</strong> Request deletion of your personal data in certain circumstances. You may also delete your account directly by following these instructions.</li>
-              <li><strong className="text-gray-800">Right to Restriction:</strong> Request restriction of processing in certain circumstances.</li>
-              <li><strong className="text-gray-800">Right to Data Portability:</strong> Receive your personal data in a structured, commonly used, machine-readable format and transmit it to another controller.</li>
-              <li><strong className="text-gray-800">Right to Object:</strong> Object to processing based on legitimate interests or for direct marketing purposes.</li>
-              <li><strong className="text-gray-800">Right to Withdraw Consent:</strong> Withdraw consent at any time where processing is based on consent.</li>
-              <li><strong className="text-gray-800">Right to Lodge a Complaint:</strong> Lodge a complaint with a supervisory authority in your country of residence.</li>
-            </ul>
-            <p className="mb-4">To exercise these rights, please submit a privacy request or contact us at privacy@eniacworld.com.</p>
+<p className="mb-4">
+You may request access, correction, deletion, or withdrawal of consent for your
+personal data by contacting us at privacy@eniacworld.com.
+</p>
+          
 
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.4 International Transfers</h3>
-            <p className="mb-4">When we transfer personal data outside the EEA, UK, or Switzerland, we ensure appropriate safeguards are in place, including:</p>
-            <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-600">
-              <li>Standard Contractual Clauses approved by the European Commission</li>
-              <li>Transfers to countries with an adequacy decision</li>
-              <li>Other lawful transfer mechanisms as permitted under applicable law</li>
-            </ul>
-            <p className="mb-4">For more information about our international data transfer practices or to obtain a copy of the relevant safeguards, please submit a privacy request or contact us at privacy@eniacworld.com.</p>
-
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.5 Data Processing Agreement</h3>
-            <p className="mb-4">If you require a Data Processing Agreement for GDPR compliance, you may obtain one here.</p>
-
-            <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">12.6 EU Representative</h3>
-            <p className="mb-4">Pursuant to Article 27 of the General Data Protection Regulation (GDPR), Eniacworld has appointed the following representative in the European Union:</p>
-            <div className="bg-gray-50 p-5 rounded-xl mb-4 text-sm font-mono text-gray-700 border border-border">
-              EU Presence d.o.o.<br/>
-              Ulica Brune Bušića 42<br/>
-              10000 Zagreb, Croatia<br/>
-              Email: dpo@eupresence.com
-            </div>
-            <p className="mb-4">You may contact our EU Representative regarding any matters related to the processing of your personal data under GDPR. You may verify our GDPR Representation Certificate here.</p>
-
-            <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">13. Information for California Residents (CCPA/CPRA)</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">12. Information for California Residents (CCPA/CPRA)</h2>
             <p className="mb-4">If you are a California resident, the following additional information applies to you under the California Consumer Privacy Act ("CCPA") as amended by the California Privacy Rights Act ("CPRA").</p>
             
             <h3 className="text-lg font-medium text-gray-900 mt-6 mb-3">13.1 Categories of Personal Information Collected</h3>
