@@ -48,6 +48,10 @@ export const authService = {
   },
   getLoginUrl: () => {
     return `${API_BASE_URL}/auth/facebook`;
+  },
+  deleteAccount: async () => {
+    const res = await apiClient.delete('/auth/me');
+    return res.data;
   }
 };
 

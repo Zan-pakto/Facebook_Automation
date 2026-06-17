@@ -1,16 +1,37 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { authService } from '@/services/api';
-import { User as UserIcon, ShieldCheck, Database, HelpCircle, AlertTriangle, Key } from 'lucide-react';
+import { User as UserIcon, ShieldCheck, Database, HelpCircle, AlertTriangle, Key, Trash2 } from 'lucide-react';
 import { User } from '@/types';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
+  const router = useRouter();
+  
   // Fetch user details
   const { data: user, isLoading } = useQuery<User>({
     queryKey: ['currentUser'],
     queryFn: authService.getMe,
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: authService.deleteAccount,
+    onSuccess: () => {
+      localStorage.removeItem('token');
+      router.push('/');
+    },
+    onError: (error) => {
+      alert('Failed to delete account. Please try again.');
+      console.error(error);
+    }
+  });
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Are you absolutely sure you want to delete your account? This will permanently delete your user profile, Facebook connections, and post history. This action cannot be undone.')) {
+      deleteMutation.mutate();
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto animate-fade-in">
@@ -144,6 +165,24 @@ FB_REDIRECT_URI=http://localhost:5000/api/auth/facebook/callback`}
                 <span>Make sure credentials are set in <code>backend/.env</code> to enable OAuth logins.</span>
               </div>
             </div>
+          </div>
+
+          {/* Danger Zone: Data Deletion */}
+          <div className="p-6 rounded-2xl border border-red-500/20 bg-red-500/5 space-y-4 mt-6">
+            <h3 className="font-semibold text-sm text-red-500 flex items-center gap-2">
+              <Trash2 className="w-4 h-4" />
+              Danger Zone
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              Permanently delete your account and all associated data, including connected Facebook pages and post history.
+            </p>
+            <button
+              onClick={handleDeleteAccount}
+              disabled={deleteMutation.isPending}
+              className="w-full px-4 py-2 bg-red-500/10 text-red-500 border border-red-500/20 rounded-lg text-xs font-semibold hover:bg-red-500/20 transition-colors flex items-center justify-center gap-2"
+            >
+              {deleteMutation.isPending ? 'Deleting Account...' : 'Delete Account & Data'}
+            </button>
           </div>
         </div>
       </div>

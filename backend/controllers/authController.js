@@ -171,9 +171,35 @@ const getMe = async (req, res) => {
   }
 };
 
+/**
+ * Delete user account and associated data
+ * DELETE /api/auth/me
+ */
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Optional: Also delete FacebookPage and PostHistory documents associated with this user
+    const FacebookPage = require('../models/FacebookPage');
+    const PostHistory = require('../models/PostHistory');
+
+    await FacebookPage.deleteMany({ user: userId });
+    await PostHistory.deleteMany({ user: userId });
+    
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    res.json({ message: 'User account and all associated data deleted successfully' });
+  } catch (err) {
+    console.error('Delete account error:', err.message);
+    res.status(500).json({ message: 'Failed to delete account' });
+  }
+};
+
 module.exports = {
   redirectToFacebook,
   handleFacebookCallback,
   loginWithFacebookToken,
   getMe,
+  deleteAccount,
 };
