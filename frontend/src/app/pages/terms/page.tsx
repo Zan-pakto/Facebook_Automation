@@ -164,7 +164,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">12. Limitation of Liability</h2>
             <div className="bg-gray-50 p-5 rounded-xl border border-gray-100 mb-6 shadow-sm">
               <p className="text-gray-800 font-medium leading-relaxed mb-4">
-                IN NO EVENT SHALL KALEMI CODE, ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, SUPPLIERS, OR LICENSORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM:
+                IN NO EVENT SHALL ENIACWORLD, ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, SUPPLIERS, OR LICENSORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM:
               </p>
               <ul className="list-disc pl-6 mb-4 space-y-2 text-gray-800 font-medium">
                 <li>Your access to or use of or inability to access or use the Service</li>
@@ -205,10 +205,10 @@ export default function TermsPage() {
 
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4 border-b border-border pb-2">15. Governing Law and Dispute Resolution</h2>
             <p className="mb-4">
-              This Agreement shall be governed by and construed in accordance with the laws of Albania, without regard to its conflict of law provisions.
+              This Agreement shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions.
             </p>
             <p className="mb-4">
-              Any disputes arising out of or relating to this Agreement or the Service shall first be attempted to be resolved through good-faith negotiation. If such negotiation fails, the dispute shall be submitted to the competent courts of Tirana, Albania.
+              Any disputes arising out of or relating to this Agreement or the Service shall first be attempted to be resolved through good-faith negotiation. If such negotiation fails, the dispute shall be submitted to the competent courts of Jaipur, Rajasthan, India.
             </p>
             <p className="mb-4">
               Notwithstanding the foregoing, we may seek injunctive or other equitable relief in any court of competent jurisdiction to protect our intellectual property rights.
@@ -244,7 +244,7 @@ export default function TermsPage() {
                 </h4>
                 <p className="text-sm text-gray-600 font-mono leading-relaxed">
                   Phone: +91 9772701985<br />
-                  Hours: Mon-Fri 9am-6pm EST<br />
+                  Hours: Mon-Fri 9am-6pm IST<br />
                   Email: support@eniacworld.com
                 </p>
               </div>
