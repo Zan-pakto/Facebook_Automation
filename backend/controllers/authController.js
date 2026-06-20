@@ -78,7 +78,7 @@ const handleFacebookCallback = async (req, res) => {
         }
       } catch (err) {
         console.error('JWT Verification failed in Facebook callback:', err);
-        return res.redirect(`${frontendUrl}/?error=invalid_token`);
+        return res.redirect(`${frontendUrl}/dashboard/settings?error=invalid_token`);
       }
     }
 
@@ -111,7 +111,11 @@ const handleFacebookCallback = async (req, res) => {
     res.redirect(`${frontendUrl}/auth/callback?token=${jwtToken}`);
   } catch (err) {
     console.error('Facebook Callback Handler Error:', err.message);
-    res.redirect(`${frontendUrl}/?error=${encodeURIComponent(err.message)}`);
+    if (state && state !== 'no_token') {
+       res.redirect(`${frontendUrl}/dashboard/settings?error=${encodeURIComponent(err.message)}`);
+    } else {
+       res.redirect(`${frontendUrl}/?error=${encodeURIComponent(err.message)}`);
+    }
   }
 };
 

@@ -1,6 +1,7 @@
 'use client';
 
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/services/api';
 import { User as UserIcon, ShieldCheck, Database, HelpCircle, AlertTriangle, Key, Trash2 } from 'lucide-react';
 import { User } from '@/types';
@@ -8,12 +9,32 @@ import { useRouter } from 'next/navigation';
 
 export default function SettingsPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   
   // Fetch user details
   const { data: user, isLoading } = useQuery<User>({
     queryKey: ['currentUser'],
     queryFn: authService.getMe,
   });
+
+  useEffect(() => {
+    // Check if the URL has a success parameter from Facebook OAuth
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'facebook_connected') {
+      // Refetch the user to get the new facebookId
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      // Clean up the URL
+      router.replace('/dashboard/settings');
+    } else if (params.get('error')) {
+      let errorMessage = params.get('error');
+      if (errorMessage === 'facebook_already_linked') {
+        alert('This Facebook account is already linked to another user!');
+      } else {
+        alert(`Failed to connect Facebook: ${decodeURIComponent(errorMessage || '')}`);
+      }
+      router.replace('/dashboard/settings');
+    }
+  }, [router, queryClient]);
 
   const deleteMutation = useMutation({
     mutationFn: authService.deleteAccount,

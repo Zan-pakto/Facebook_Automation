@@ -72,8 +72,16 @@ export const pageService = {
     const res = await apiClient.get('/pages');
     return res.data;
   },
+  getFacebookRawPages: async () => {
+    const res = await apiClient.get('/pages/facebook-raw');
+    return res.data;
+  },
   syncPages: async () => {
     const res = await apiClient.post('/pages/sync');
+    return res.data;
+  },
+  connectSelectedPages: async (pageIds: string[]) => {
+    const res = await apiClient.post('/pages/connect-selected', { pageIds });
     return res.data;
   }
 };

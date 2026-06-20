@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { pageService, postService } from '@/services/api';
 import { FacebookPage, PostHistory } from '@/types';
@@ -33,13 +34,45 @@ export default function DashboardOverview() {
     queryFn: postService.getHistory,
   });
 
-  // 3. Page Sync Mutation
-  const syncMutation = useMutation({
-    mutationFn: pageService.syncPages,
+  // 3. Page Sync Mutation (Replaced with custom selection modal)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rawPages, setRawPages] = useState<any[]>([]);
+  const [isLoadingRaw, setIsLoadingRaw] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const connectMutation = useMutation({
+    mutationFn: pageService.connectSelectedPages,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['facebookPages'] });
+      setIsModalOpen(false);
     },
   });
+
+  const handleOpenSyncModal = async () => {
+    setIsModalOpen(true);
+    setIsLoadingRaw(true);
+    try {
+      const data = await pageService.getFacebookRawPages();
+      setRawPages(data);
+      // Pre-select pages that are already connected in our database
+      setSelectedIds(pages.map((p: any) => p.pageId));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to fetch pages from Facebook.");
+    } finally {
+      setIsLoadingRaw(false);
+    }
+  };
+
+  const handleTogglePage = (pageId: string) => {
+    setSelectedIds(prev => 
+      prev.includes(pageId) ? prev.filter(id => id !== pageId) : [...prev, pageId]
+    );
+  };
+
+  const handleSaveSelectedPages = () => {
+    connectMutation.mutate(selectedIds);
+  };
 
   // Calculate Metrics
   const totalPages = pages.length;
@@ -192,11 +225,11 @@ export default function DashboardOverview() {
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-md tracking-tight text-gray-900">Connected Facebook Pages</h3>
             <button
-              onClick={() => syncMutation.mutate()}
-              disabled={syncMutation.isPending}
+              onClick={handleOpenSyncModal}
+              disabled={isLoadingRaw}
               className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-gray-900 transition-colors disabled:opacity-50"
             >
-              <RefreshCw className={`w-3 h-3 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3 h-3 ${isLoadingRaw ? 'animate-spin' : ''}`} />
               Sync
             </button>
           </div>
@@ -221,11 +254,11 @@ export default function DashboardOverview() {
                 We couldn't find any pages linked to your Meta profile. Please sync to import them.
               </p>
               <button
-                onClick={() => syncMutation.mutate()}
-                disabled={syncMutation.isPending}
+                onClick={handleOpenSyncModal}
+                disabled={isLoadingRaw}
                 className="px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-xl font-semibold text-xs transition-all flex items-center gap-2 text-foreground"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${syncMutation.isPending ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${isLoadingRaw ? 'animate-spin' : ''}`} />
                 Sync Facebook Pages
               </button>
             </div>
@@ -319,6 +352,86 @@ export default function DashboardOverview() {
           )}
         </div>
       </div>
+
+      {/* Page Selection Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl p-6 max-w-md w-full border border-border shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Sync Facebook Pages</h3>
+              <p className="text-xs text-muted-foreground mt-1">Select the pages you want to import and post to.</p>
+            </div>
+
+            {isLoadingRaw ? (
+              <div className="flex-1 py-12 flex flex-col items-center justify-center space-y-3">
+                <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-xs text-muted-foreground">Fetching pages from Facebook...</p>
+              </div>
+            ) : rawPages.length === 0 ? (
+              <div className="flex-1 py-12 text-center text-xs text-muted-foreground">
+                No managed pages found on this Facebook account.
+              </div>
+            ) : (
+              <div className="flex-1 overflow-y-auto space-y-2 pr-1 py-1">
+                {rawPages.map((page) => {
+                  const isSelected = selectedIds.includes(page.pageId);
+                  return (
+                    <div 
+                      key={page.pageId}
+                      onClick={() => handleTogglePage(page.pageId)}
+                      className={`p-3 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
+                        isSelected 
+                          ? 'border-primary/30 bg-primary/5' 
+                          : 'border-border bg-card hover:bg-muted/20'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        {page.picture ? (
+                          <img 
+                            src={page.picture} 
+                            alt={page.pageName} 
+                            className="w-9 h-9 rounded-full object-cover border border-border"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-xs uppercase">
+                            {page.pageName.substring(0, 2)}
+                          </div>
+                        )}
+                        <div className="overflow-hidden text-left">
+                          <h4 className="font-semibold text-xs truncate text-gray-900">{page.pageName}</h4>
+                          <p className="text-[10px] text-muted-foreground truncate">{page.category || 'Business Page'}</p>
+                        </div>
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={isSelected}
+                        onChange={() => {}} // Handled by div onClick
+                        className="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4 pointer-events-none"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="flex-1 py-2.5 rounded-xl border border-border text-xs font-semibold text-gray-700 hover:bg-muted transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveSelectedPages}
+                disabled={isLoadingRaw || connectMutation.isPending}
+                className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white text-xs font-semibold shadow-lg shadow-primary/15 transition-all active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+              >
+                {connectMutation.isPending ? 'Saving...' : 'Connect Selected'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
