@@ -42,12 +42,24 @@ export const authService = {
     const res = await apiClient.get('/auth/me');
     return res.data;
   },
+  login: async (credentials: any) => {
+    const res = await apiClient.post('/auth/login', credentials);
+    return res.data;
+  },
+  createAccount: async (data: any) => {
+    const res = await apiClient.post('/auth/createaccount', data);
+    return res.data;
+  },
   loginWithToken: async (accessToken: string) => {
     const res = await apiClient.post('/auth/facebook', { accessToken });
     return res.data;
   },
   getLoginUrl: () => {
     return `${API_BASE_URL}/auth/facebook`;
+  },
+  getConnectFacebookUrl: () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    return `${API_BASE_URL}/auth/facebook${token ? `?token=${token}` : ''}`;
   },
   deleteAccount: async () => {
     const res = await apiClient.delete('/auth/me');

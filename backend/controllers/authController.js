@@ -10,6 +10,7 @@ const cryptoService = require('../services/cryptoService');
 const redirectToFacebook = (req, res) => {
   const appId = process.env.FB_APP_ID;
   const redirectUri = process.env.FB_REDIRECT_URI;
+  const token = req.query.token; // Pass JWT token to link account
   
   if (!appId || !redirectUri) {
     return res.status(500).json({ 
@@ -25,7 +26,9 @@ const redirectToFacebook = (req, res) => {
     'email'
   ].join(',');
 
-  const fbUrl = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
+  const state = token ? token : 'no_token';
+
+  const fbUrl = `https://www.facebook.com/v20.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}&state=${state}`;
   
   res.redirect(fbUrl);
 };
@@ -35,16 +38,16 @@ const redirectToFacebook = (req, res) => {
  * GET /api/auth/facebook/callback
  */
 const handleFacebookCallback = async (req, res) => {
-  const { code, error } = req.query;
+  const { code, state, error } = req.query;
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
   if (error) {
     console.error('Facebook OAuth Callback Error:', error);
-    return res.redirect(`${frontendUrl}/?error=${encodeURIComponent(error)}`);
+    return res.redirect(`${frontendUrl}/dashboard/settings?error=${encodeURIComponent(error)}`);
   }
 
   if (!code) {
-    return res.redirect(`${frontendUrl}/?error=no_code_provided`);
+    return res.redirect(`${frontendUrl}/dashboard/settings?error=no_code_provided`);
   }
 
   try {
@@ -60,7 +63,26 @@ const handleFacebookCallback = async (req, res) => {
     // 4. Encrypt the access token before storing
     const encryptedToken = cryptoService.encrypt(longLivedToken);
 
-    // 5. Create or update user in MongoDB
+    // 5. Connect to existing user if token provided
+    if (state && state !== 'no_token') {
+      try {
+        const decoded = jwt.verify(state, process.env.JWT_SECRET || 'default_jwt_secret');
+        let user = await User.findById(decoded.id);
+        if (user) {
+          user.facebookId = profile.id;
+          user.accessToken = encryptedToken;
+          if (!user.name) user.name = profile.name;
+          await user.save();
+          
+          return res.redirect(`${frontendUrl}/dashboard/settings?success=facebook_connected`);
+        }
+      } catch (err) {
+        console.error('JWT Verification failed in Facebook callback:', err);
+        return res.redirect(`${frontendUrl}/?error=invalid_token`);
+      }
+    }
+
+    // 6. Existing fallback: Create or update user in MongoDB if logging in via Facebook
     let user = await User.findOne({ facebookId: profile.id });
     
     if (user) {
@@ -78,14 +100,14 @@ const handleFacebookCallback = async (req, res) => {
       await user.save();
     }
 
-    // 6. Generate JWT Session Token
+    // 7. Generate JWT Session Token
     const jwtToken = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET || 'default_jwt_secret',
       { expiresIn: '30d' }
     );
 
-    // 7. Redirect back to frontend dashboard with JWT
+    // 8. Redirect back to frontend dashboard with JWT
     res.redirect(`${frontendUrl}/auth/callback?token=${jwtToken}`);
   } catch (err) {
     console.error('Facebook Callback Handler Error:', err.message);

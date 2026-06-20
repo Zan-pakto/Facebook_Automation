@@ -82,9 +82,19 @@ export default function Sidebar() {
             </div>
             <div className="overflow-hidden">
               <p className="text-xs font-semibold truncate text-gray-900">{user.name}</p>
-              <p className="text-[10px] text-muted-foreground truncate">{user.email || 'Connected via Meta'}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{user.email || 'Local Account'}</p>
             </div>
           </div>
+        )}
+
+        {user && !user.facebookId && (
+          <button
+            onClick={() => window.location.href = authService.getConnectFacebookUrl()}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#1877f2] hover:bg-[#166fe5] text-white transition-all cursor-pointer shadow-md shadow-[#1877f2]/20"
+          >
+            <FacebookIcon className="w-4 h-4 text-white" />
+            Connect Facebook
+          </button>
         )}
 
         <button
@@ -92,7 +102,7 @@ export default function Sidebar() {
           className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 border border-transparent hover:border-red-500/10 active:scale-[0.98] transition-all cursor-pointer"
         >
           <LogOut className="w-3.5 h-3.5" />
-          Disconnect Account
+          Logout
         </button>
       </div>
     </aside>

@@ -57,20 +57,32 @@ export default function SettingsPage() {
                 <div className="h-10 bg-muted rounded-xl w-2/3"></div>
               </div>
             ) : user ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
-                  <span className="text-[10px] text-muted-foreground uppercase font-semibold">User Display Name</span>
-                  <p className="font-semibold text-foreground">{user.name}</p>
+              user.facebookId ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">User Display Name</span>
+                    <p className="font-semibold text-foreground">{user.name}</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">Profile Email</span>
+                    <p className="font-semibold text-foreground">{user.email || 'N/A'}</p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1 sm:col-span-2">
+                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">Facebook User ID</span>
+                    <code className="font-mono text-foreground block mt-0.5">{user.facebookId}</code>
+                  </div>
                 </div>
-                <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
-                  <span className="text-[10px] text-muted-foreground uppercase font-semibold">Profile Email</span>
-                  <p className="font-semibold text-foreground">{user.email || 'N/A'}</p>
+              ) : (
+                <div className="p-6 rounded-xl border border-dashed border-border bg-muted/20 text-center space-y-3">
+                  <p className="text-xs text-muted-foreground">You haven't connected your Facebook account yet.</p>
+                  <button
+                    onClick={() => window.location.href = authService.getConnectFacebookUrl()}
+                    className="mx-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-[#1877f2] hover:bg-[#166fe5] text-white transition-all cursor-pointer shadow-md shadow-[#1877f2]/20"
+                  >
+                    Connect Facebook
+                  </button>
                 </div>
-                <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1 sm:col-span-2">
-                  <span className="text-[10px] text-muted-foreground uppercase font-semibold">Facebook User ID</span>
-                  <code className="font-mono text-foreground block mt-0.5">{user.facebookId}</code>
-                </div>
-              </div>
+              )
             ) : (
               <p className="text-xs text-red-400">Could not retrieve user data. Re-authenticate.</p>
             )}

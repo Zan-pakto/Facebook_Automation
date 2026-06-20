@@ -10,7 +10,7 @@ const pageRoutes = require('./routes/pages');
 const postRoutes = require('./routes/posts');
 
 // Connect to Database
-connectDB();
+// connectDB() is called later before app.listen
 
 const app = express();
 
@@ -38,6 +38,8 @@ app.get('/api/health', (req, res) => {
 // Port configuration
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  });
 });
