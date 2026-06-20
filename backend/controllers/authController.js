@@ -222,10 +222,37 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+/**
+ * Disconnect Facebook account from user profile
+ * POST /api/auth/facebook/disconnect
+ */
+const disconnectFacebook = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.facebookId = undefined;
+    user.accessToken = undefined;
+    await user.save();
+
+    // Delete associated pages
+    const FacebookPage = require('../models/FacebookPage');
+    await FacebookPage.deleteMany({ ownerUserId: user._id });
+
+    res.json({ message: 'Facebook account disconnected successfully' });
+  } catch (err) {
+    console.error('Disconnect Facebook error:', err.message);
+    res.status(500).json({ message: 'Failed to disconnect Facebook account' });
+  }
+};
+
 module.exports = {
   redirectToFacebook,
   handleFacebookCallback,
   loginWithFacebookToken,
   getMe,
   deleteAccount,
+  disconnectFacebook,
 };

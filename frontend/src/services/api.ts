@@ -64,6 +64,10 @@ export const authService = {
   deleteAccount: async () => {
     const res = await apiClient.delete('/auth/me');
     return res.data;
+  },
+  disconnectFacebook: async () => {
+    const res = await apiClient.post('/auth/facebook/disconnect');
+    return res.data;
   }
 };
 

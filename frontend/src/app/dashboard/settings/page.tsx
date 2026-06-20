@@ -54,6 +54,26 @@ export default function SettingsPage() {
     }
   };
 
+  const disconnectMutation = useMutation({
+    mutationFn: authService.disconnectFacebook,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+      // Also invalidate facebookPages query
+      queryClient.invalidateQueries({ queryKey: ['facebookPages'] });
+      alert('Facebook account disconnected successfully.');
+    },
+    onError: (error) => {
+      alert('Failed to disconnect Facebook account.');
+      console.error(error);
+    }
+  });
+
+  const handleDisconnectFacebook = () => {
+    if (window.confirm('Are you sure you want to disconnect your Facebook account? This will remove all connected pages.')) {
+      disconnectMutation.mutate();
+    }
+  };
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto animate-fade-in">
       <div>
@@ -79,18 +99,29 @@ export default function SettingsPage() {
               </div>
             ) : user ? (
               user.facebookId ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
-                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">User Display Name</span>
-                    <p className="font-semibold text-foreground">{user.name}</p>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                      <span className="text-[10px] text-muted-foreground uppercase font-semibold">User Display Name</span>
+                      <p className="font-semibold text-foreground">{user.name}</p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
+                      <span className="text-[10px] text-muted-foreground uppercase font-semibold">Profile Email</span>
+                      <p className="font-semibold text-foreground">{user.email || 'N/A'}</p>
+                    </div>
+                    <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1 sm:col-span-2">
+                      <span className="text-[10px] text-muted-foreground uppercase font-semibold">Facebook User ID</span>
+                      <code className="font-mono text-foreground block mt-0.5">{user.facebookId}</code>
+                    </div>
                   </div>
-                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1">
-                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">Profile Email</span>
-                    <p className="font-semibold text-foreground">{user.email || 'N/A'}</p>
-                  </div>
-                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border space-y-1 sm:col-span-2">
-                    <span className="text-[10px] text-muted-foreground uppercase font-semibold">Facebook User ID</span>
-                    <code className="font-mono text-foreground block mt-0.5">{user.facebookId}</code>
+                  <div className="flex justify-end pt-1">
+                    <button
+                      onClick={handleDisconnectFacebook}
+                      disabled={disconnectMutation.isPending}
+                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      {disconnectMutation.isPending ? 'Disconnecting...' : 'Disconnect Facebook'}
+                    </button>
                   </div>
                 </div>
               ) : (

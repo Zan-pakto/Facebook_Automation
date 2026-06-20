@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { redirectToFacebook, handleFacebookCallback, loginWithFacebookToken, getMe, deleteAccount 
+const { redirectToFacebook, handleFacebookCallback, loginWithFacebookToken, getMe, deleteAccount, disconnectFacebook 
 } = require('../controllers/authController');
 const createAccount = require('../controllers/createAccount');
 const { protect } = require('../middleware/authMiddleware');
@@ -13,5 +13,6 @@ router.post('/createaccount', createAccount);
 router.post('/login', login);
 router.get('/me', protect, getMe);
 router.delete('/me', protect, deleteAccount);
+router.post('/facebook/disconnect', protect, disconnectFacebook);
 
 module.exports = router;
