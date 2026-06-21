@@ -30,7 +30,6 @@ export default function PostComposer() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaType, setMediaType] = useState<'text' | 'image' | 'video'>('text');
-  const [mediaType, setMediaType] = useState<'text' | 'image' | 'video'>('text');
   const [searchQuery, setSearchQuery] = useState('');
   const [scheduledAt, setScheduledAt] = useState('');
 

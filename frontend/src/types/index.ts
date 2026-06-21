@@ -43,3 +43,20 @@ export interface DashboardMetrics {
   successRate: number;
   lastSyncedAt?: string;
 }
+
+export interface ScheduledPost {
+  _id: string;
+  ownerUserId: string;
+  content: string;
+  mediaUrl?: string;
+  mediaType: 'text' | 'image' | 'video';
+  fileName?: string;
+  selectedPages: {
+    pageId: string;
+    pageName: string;
+  }[];
+  scheduledAt: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  error?: string;
+  createdAt: string;
+}
