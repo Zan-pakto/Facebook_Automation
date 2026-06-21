@@ -34,7 +34,7 @@ const syncPages = async (req, res) => {
           category: rawPage.category || '',
           picture: pictureUrl,
         },
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
       
       syncedPages.push(updatedPage);
@@ -132,7 +132,7 @@ const saveSelectedPages = async (req, res) => {
           category: rawPage.category || '',
           picture: pictureUrl,
         },
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
       savedPages.push(updatedPage);
     }
