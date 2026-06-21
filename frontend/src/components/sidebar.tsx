@@ -10,7 +10,8 @@ import {
   History, 
   Settings, 
   LogOut, 
-  User
+  User,
+  Clock
 } from 'lucide-react';
 import FacebookIcon from '@/components/facebook-icon';
 
@@ -33,6 +34,7 @@ export default function Sidebar() {
   const navItems = [
     { name: 'Overview', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Composer', path: '/dashboard/composer', icon: PenTool },
+    { name: 'Scheduled Posts', path: '/dashboard/scheduled', icon: Clock },
     { name: 'History Logs', path: '/dashboard/history', icon: History },
     { name: 'Settings', path: '/dashboard/settings', icon: Settings },
   ];

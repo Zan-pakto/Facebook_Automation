@@ -99,8 +99,24 @@ export const postService = {
     });
     return res.data;
   },
+  schedulePost: async (formData: FormData) => {
+    const res = await apiClient.post('/posts/schedule', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  },
   getHistory: async () => {
     const res = await apiClient.get('/posts/history');
+    return res.data;
+  },
+  getScheduledPosts: async () => {
+    const res = await apiClient.get('/posts/scheduled');
+    return res.data;
+  },
+  cancelScheduledPost: async (id: string) => {
+    const res = await apiClient.delete(`/posts/scheduled/${id}`);
     return res.data;
   }
 };

@@ -12,6 +12,8 @@ const postRoutes = require('./routes/posts');
 // Connect to Database
 // connectDB() is called later before app.listen
 
+// Initialize background cron jobs
+require('./cron/scheduler');
 const app = express();
 
 // Middleware

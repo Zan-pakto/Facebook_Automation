@@ -15,7 +15,8 @@ import {
   Loader2, 
   CheckCircle2, 
   AlertCircle, 
-  ArrowLeftRight 
+  ArrowLeftRight,
+  Clock
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -29,7 +30,9 @@ export default function PostComposer() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaType, setMediaType] = useState<'text' | 'image' | 'video'>('text');
+  const [mediaType, setMediaType] = useState<'text' | 'image' | 'video'>('text');
   const [searchQuery, setSearchQuery] = useState('');
+  const [scheduledAt, setScheduledAt] = useState('');
 
   // Progress modal states
   const [isPublishing, setIsPublishing] = useState(false);
@@ -150,6 +153,23 @@ export default function PostComposer() {
     }
   });
 
+  // Schedule post mutation
+  const scheduleMutation = useMutation({
+    mutationFn: postService.schedulePost,
+    onSuccess: () => {
+      alert('Post scheduled successfully!');
+      setContent('');
+      handleRemoveFile();
+      setSelectedPageIds([]);
+      setScheduledAt('');
+      queryClient.invalidateQueries({ queryKey: ['scheduledPosts'] });
+    },
+    onError: (error: any) => {
+      const errMsg = error.response?.data?.message || error.message;
+      alert(`Failed to schedule post: ${errMsg}`);
+    }
+  });
+
   const handlePublish = () => {
     if (selectedPageIds.length === 0) return;
     
@@ -160,10 +180,6 @@ export default function PostComposer() {
       status: 'pending' as const
     }));
 
-    setPublishProgress(initialProgress);
-    setShowProgressModal(true);
-    setIsPublishing(true);
-
     // Build form data
     const formData = new FormData();
     formData.append('content', content);
@@ -172,7 +188,15 @@ export default function PostComposer() {
       formData.append('media', selectedFile);
     }
 
-    publishMutation.mutate(formData);
+    if (scheduledAt) {
+      formData.append('scheduledAt', new Date(scheduledAt).toISOString());
+      scheduleMutation.mutate(formData);
+    } else {
+      setPublishProgress(initialProgress);
+      setShowProgressModal(true);
+      setIsPublishing(true);
+      publishMutation.mutate(formData);
+    }
   };
 
   const handleCloseProgressModal = () => {
@@ -359,16 +383,41 @@ export default function PostComposer() {
               )}
             </div>
 
-            {/* Submit Button */}
-            <button
-              type="button"
-              onClick={handlePublish}
-              disabled={!isFormValid || isPublishing}
-              className="w-full py-4 rounded-xl bg-primary hover:bg-primary-hover disabled:bg-slate-800 disabled:opacity-50 text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/10 cursor-pointer disabled:pointer-events-none"
-            >
-              <Send className="w-4 h-4" />
-              Publish to {selectedPageIds.length} Facebook Page{selectedPageIds.length === 1 ? '' : 's'}
-            </button>
+            {/* Schedule / Publish actions */}
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center gap-2 text-xs">
+                <Clock className="w-4 h-4 text-muted-foreground" />
+                <label className="font-semibold text-foreground">Schedule for later (Optional)</label>
+              </div>
+              <input 
+                type="datetime-local" 
+                value={scheduledAt}
+                onChange={(e) => setScheduledAt(e.target.value)}
+                min={new Date().toISOString().slice(0, 16)}
+                className="w-full p-3 rounded-xl glass-input text-xs"
+              />
+
+              <button
+                type="button"
+                onClick={handlePublish}
+                disabled={!isFormValid || isPublishing || publishMutation.isPending || scheduleMutation.isPending}
+                className={`w-full py-4 rounded-xl text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer disabled:pointer-events-none disabled:bg-slate-800 disabled:opacity-50 ${
+                  scheduledAt ? 'bg-accent hover:bg-accent/90 shadow-accent/10' : 'bg-primary hover:bg-primary-hover shadow-primary/10'
+                }`}
+              >
+                {scheduledAt ? (
+                  <>
+                    <Clock className="w-4 h-4" />
+                    {scheduleMutation.isPending ? 'Scheduling...' : `Schedule to ${selectedPageIds.length} Page${selectedPageIds.length === 1 ? '' : 's'}`}
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    {publishMutation.isPending ? 'Publishing...' : `Publish to ${selectedPageIds.length} Page${selectedPageIds.length === 1 ? '' : 's'}`}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
