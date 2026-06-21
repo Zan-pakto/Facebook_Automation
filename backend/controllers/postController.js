@@ -60,11 +60,10 @@ const publishPost = async (req, res) => {
       return res.status(400).json({ message: 'Selected pages not found in database.' });
     }
 
-    const publishResults = [];
     const selectedPagesList = pages.map(p => ({ pageId: p.pageId, pageName: p.pageName }));
 
-    // 2. Publish to each page
-    for (const page of pages) {
+    // 2. Publish to each page concurrently
+    const publishPromises = pages.map(async (page) => {
       const decryptedToken = cryptoService.decrypt(page.pageAccessToken);
       
       try {
@@ -93,22 +92,24 @@ const publishPost = async (req, res) => {
           );
         }
 
-        publishResults.push({
+        return {
           pageId: page.pageId,
           pageName: page.pageName,
           status: 'success',
           postId: postId,
-        });
+        };
       } catch (err) {
         console.error(`Failed to publish to page ${page.pageName}:`, err.message);
-        publishResults.push({
+        return {
           pageId: page.pageId,
           pageName: page.pageName,
           status: 'failed',
           error: err.message,
-        });
+        };
       }
-    }
+    });
+
+    const publishResults = await Promise.all(publishPromises);
 
     // 3. Save to database history
     const history = new PostHistory({
